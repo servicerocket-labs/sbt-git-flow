@@ -20,17 +20,17 @@ compatible with [git flow](https://github.com/nvie/gitflow).
  * A [publish repository](https://github.com/harrah/xsbt/wiki/Publishing) configured. 
 
 ## Usage
+Add the following line to `./project/build.sbt`. 
+
+    # project/plugins.sbt
+    addSbtPlugin("com.servicerocket" % "sbt-git-flow" % "0.1.1")
+
+Then you can release by using the following
 
     > sbt release
 
 For anything other than the basic instructions provided here, refer to the 
 [sbt-release](https://github.com/sbt/sbt-release) documentation.
-
-### Adding the plugin dependency
-Add the following line to `./project/build.sbt`. 
-
-    # project/plugins.sbt
-    addSbtPlugin("com.servicerocket" % "sbt-git-flow" % "0.2.1")
 
 ### Including sbt-release settings
 **Important:** The settings `releaseSettings` is automatically mixed into all projects,
