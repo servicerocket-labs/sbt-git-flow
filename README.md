@@ -25,6 +25,10 @@ Add the following line to `./project/build.sbt`.
     # project/plugins.sbt
     addSbtPlugin("com.servicerocket" % "sbt-git-flow" % "0.1.1")
 
+Make sure to initialize your repository with git flow running
+
+    > git flow init
+
 Then you can release by using the following
 
     > sbt release
