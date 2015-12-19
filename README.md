@@ -70,9 +70,24 @@ version in other projects, you can publish this project to your local [Ivy][4] r
 
     > sbt publish-local
  
+### Other settings
+
+This plugin is an extesntion to [sbt-release](https://github.com/sbt/sbt-release) so the settings supported by that plugin will be respected. 
+
+For instance, you can run a non-interactive release by providing the argument `with-defaults` (tab completion works) to the `release` command. From command line use the follwoing command:
+
+    > sbt 'release with-defaults'
+    
+  or alternatively from the `sbt` shell use the `release with-defaults` command.
+
+You can also optionally avoid running any tests by providing the `skip-tests` argument to the `release` command:
+
+    > sbt 'release skip-tests'
+
+For more information please refer to [sbt-release](https://github.com/sbt/sbt-release).  
+
 ## License note
 This plugin is a fork of `com.twitter:sbt-gitflow` plugin by `Sam Ritchie`.
-
 
 [1]: https://dl.bintray.com/servicerocket/sbt-plugins/
 [2]: https://bintray.com
