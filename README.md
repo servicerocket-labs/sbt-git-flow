@@ -23,11 +23,7 @@ compatible with [git flow](https://github.com/nvie/gitflow).
 Add the following line to `./project/build.sbt`. 
 
     # project/plugins.sbt
-    addSbtPlugin("com.servicerocket" % "sbt-git-flow" % "0.1.1")
-
-Make sure to initialize your repository with git flow running
-
-    > git flow init
+    addSbtPlugin("com.servicerocket" % "sbt-git-flow" % "0.1.2")
 
 Then you can release by using the following
 
