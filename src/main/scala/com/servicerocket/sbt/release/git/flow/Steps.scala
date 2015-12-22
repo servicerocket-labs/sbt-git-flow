@@ -15,7 +15,10 @@ object Steps {
   lazy val checkGitFlowExists = { state: State =>
     "command -v git-flow || echo".!! match {
       case "echo\n" => sys.error("git-flow is required for release. See https://github.com/nvie/gitflow for installation instructions.")
-      case _ => state
+      case _ => "git flow init -d".! match {
+        case 0 => state
+        case _ => sys.error("git-flow init failed!")
+      }
     }
   }
 
