@@ -3,6 +3,7 @@ name := "sbt-git-flow"
 organization := "com.servicerocket"
 organizationName := "ServiceRocket"
 organizationHomepage := Option(url("http://www.servicerocket.com"))
+bintrayOrganization := Some("servicerocket-bintray")
 
 description := "SBT plugin for git-flow integrated release"
 startYear := Option(2015)
