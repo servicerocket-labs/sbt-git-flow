@@ -13,11 +13,11 @@ import sbt._
 object Steps {
 
   lazy val checkGitFlowExists = { state: State =>
-    "git help".! match {
+    ("git help" #> (new java.io.ByteArrayOutputStream()) !) match {
       case 0 =>
         "git help -a".!! match {
           case str if str.contains("flow") =>
-            "git flow init -d".! match {
+            ("git flow init -d"  #> (new java.io.ByteArrayOutputStream()) !) match {
               case 0 => state
               case _ => sys.error("git-flow init failed!")
             }
