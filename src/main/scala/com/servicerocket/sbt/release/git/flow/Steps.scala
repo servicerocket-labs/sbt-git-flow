@@ -20,6 +20,7 @@ object Steps {
             "git flow init -d".! match {
               case 0 => state
               case _ => sys.error("git-flow init failed!")
+            }
           case _ => sys.error("git-flow is required for release. See https://github.com/nvie/gitflow for installation instructions.")
       }
       case _ => sys.error("git is required for release.")
