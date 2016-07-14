@@ -28,15 +28,15 @@ object Steps {
   }
 
   lazy val gitFlowReleaseStart = execStep {
-    "git flow release start " + releaseVersion(_)
+    "git flow release start v" + releaseVersion(_)
   }
 
   lazy val gitFlowReleaseFinish = execStep { state =>
     val rv = releaseVersion(state)
     val commands = List(
-      s"echo 'Releasing $rv.' > .git/MY_TAGMSG",
+      s"echo 'Releasing v$rv.' > .git/MY_TAGMSG",
       "git config core.editor \"mv .git/MY_TAGMSG\"",
-      s"git flow release finish $rv",
+      s"git flow release finish v$rv",
       "git config --unset core.editor"
     )
     commands mkString "; "
