@@ -8,6 +8,7 @@ import sbtrelease.ReleasePlugin.autoImport.ReleaseKeys._
   * @author Nader Hadji Ghanbari
   */
 object Util {
+  import scala.sys.process._
 
   /** Returns the current sbt version pf the project or throws exception if no version is set
     * as this is necessary for a proper release.
@@ -24,7 +25,7 @@ object Util {
     * @param command Command to be executed.
     * @return Exit code.
     */
-  def exec(command: String) = List("sh", "-c", s"($command)") ! StandardLogger
+  def exec(command: String) = Seq("sh", "-c", s"($command)").!(StandardLogger)
 
   /** Executes a step and logs some information about it. 
     *
@@ -43,10 +44,10 @@ object Util {
 /** Standard process logger piping output stream to console and
   * error stream to system error.
   */
-object StandardLogger extends ProcessLogger {
-  override def info(s: => String) = println(s)
+object StandardLogger extends scala.sys.process.ProcessLogger {
+  override def out(s: => String) = println(s)
 
-  override def error(s: => String) = sys.error(s)
+  override def err(s: => String) = sys.error(s)
 
   override def buffer[T](f: => T) = f
 }

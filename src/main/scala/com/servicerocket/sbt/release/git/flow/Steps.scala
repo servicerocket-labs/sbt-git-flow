@@ -11,7 +11,7 @@ import sbt._
   * @author Nader Hadji Ghanbari
   */
 object Steps {
-
+  import scala.sys.process._
   lazy val checkGitFlowExists = { state: State =>
     "command -v git-flow || echo".!! match {
       case "echo\n" => sys.error("git-flow is required for release. See https://github.com/nvie/gitflow for installation instructions.")
