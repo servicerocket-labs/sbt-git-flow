@@ -1,8 +1,7 @@
 package com.servicerocket.sbt.release.git.flow
 
-import com.servicerocket.sbt.release.git.flow.Util._
-
 import sbt._
+import com.servicerocket.sbt.release.git.flow.Util._
 
 /** Singleton object containing all release steps.
   *
@@ -12,17 +11,19 @@ import sbt._
   */
 object Steps {
 
+  private val devNull = new java.io.ByteArrayOutputStream()
+
   lazy val checkGitFlowExists = { state: State =>
-    ("git help" #> (new java.io.ByteArrayOutputStream()) !) match {
+    ("git help" #> devNull).! match {
       case 0 =>
         "git help -a".!! match {
           case str if str.contains("flow") =>
-            ("git flow init -d"  #> (new java.io.ByteArrayOutputStream()) !) match {
+            ("git flow init -d" #> devNull).! match {
               case 0 => state
               case _ => sys.error("git-flow init failed!")
             }
           case _ => sys.error("git-flow is required for release. See https://github.com/nvie/gitflow for installation instructions.")
-      }
+        }
       case _ => sys.error("git is required for release.")
     }
   }

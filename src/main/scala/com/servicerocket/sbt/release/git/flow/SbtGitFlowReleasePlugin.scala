@@ -8,12 +8,15 @@ import sbtrelease._
 import sbtrelease.ReleaseStateTransformations._
 import sbtrelease.ReleasePlugin.autoImport.{ReleaseStep, releaseProcess}
 
-
 /** SBT auto plugin making the release process integrated with git-flow.
   *
   * @author Nader Hadji Ghanbari
   */
 object SbtGitFlowReleasePlugin extends AutoPlugin {
+
+  case class SbtGitFlowException(message: String) extends Throwable(message, null) {
+    this.setStackTrace(Array[java.lang.StackTraceElement]())
+  }
 
   private def removeStackTraces(rs: ReleaseStep): ReleaseStep =
     ReleaseStep(
@@ -26,32 +29,32 @@ object SbtGitFlowReleasePlugin extends AutoPlugin {
           }
         } catch {
           case err: Throwable =>
-            throw sbtgitflow.SbtGitFlowException(err.getMessage)
+            throw SbtGitFlowException(err.getMessage)
         }
       },
       enableCrossBuild = rs.enableCrossBuild
     )
 
   private val releaseSteps = Seq[ReleaseStep](
-      removeStackTraces(checkSnapshotDependencies),
-      removeStackTraces(checkGitFlowExists),
-      removeStackTraces(inquireVersions),
-      removeStackTraces(runTest),
-      removeStackTraces(gitFlowReleaseStart),
-      removeStackTraces(setReleaseVersion),
-      removeStackTraces(commitReleaseVersion),
-      removeStackTraces(publishArtifacts),
-      removeStackTraces(gitFlowReleaseFinish),
-      removeStackTraces(pushMaster),
-      removeStackTraces(setNextVersion),
-      removeStackTraces(commitNextVersion),
-      removeStackTraces(pushChanges)
-    )
+    checkSnapshotDependencies,
+    checkGitFlowExists,
+    inquireVersions,
+    runTest,
+    gitFlowReleaseStart,
+    setReleaseVersion,
+    commitReleaseVersion,
+    publishArtifacts,
+    gitFlowReleaseFinish,
+    pushMaster,
+    setNextVersion,
+    commitNextVersion,
+    pushChanges
+  )
 
   override def requires = ReleasePlugin
 
   override def trigger = allRequirements
 
-  override lazy val projectSettings = Seq[Setting[_]](releaseProcess := releaseSteps)
+  override lazy val projectSettings = Seq[Setting[_]](releaseProcess := releaseSteps.map(removeStackTraces))
 
 }
