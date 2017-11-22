@@ -26,7 +26,7 @@ object Util {
     */
   def exec(command: String) = List("sh", "-c", s"($command)") ! StandardLogger
 
-  /** Executes a step and logs some information about it. 
+  /** Executes a step and logs some information about it.
     *
     * @param f Function form current state to a command to be executed to reach the next state.
     * @return Release step.
@@ -46,7 +46,19 @@ object Util {
 object StandardLogger extends ProcessLogger {
   override def info(s: => String) = println(s)
 
-  override def error(s: => String) = sys.error(s)
+  override def error(s: => String) = try {
+    sys.error(s)
+  } catch {
+    case re: RuntimeException =>
+      val msg  =
+        try {
+          re.getCause.getMessage
+        } catch {
+          case _ : Throwable => re.getMessage
+        }
+
+      System.err.println(msg)
+  }
 
   override def buffer[T](f: => T) = f
 }

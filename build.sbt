@@ -13,4 +13,4 @@ scalaVersion := "2.10.5"
 
 sbtPlugin := true
 
-addSbtPlugin("com.github.gseitz" % "sbt-release" % "1.0.1")
+addSbtPlugin("com.github.gseitz" % "sbt-release" % "1.0.3")

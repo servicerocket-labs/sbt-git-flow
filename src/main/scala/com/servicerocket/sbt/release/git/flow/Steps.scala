@@ -13,25 +13,30 @@ import sbt._
 object Steps {
 
   lazy val checkGitFlowExists = { state: State =>
-    "command -v git-flow || echo".!! match {
-      case "echo\n" => sys.error("git-flow is required for release. See https://github.com/nvie/gitflow for installation instructions.")
-      case _ => "git flow init -d".! match {
-        case 0 => state
-        case _ => sys.error("git-flow init failed!")
+    ("git help" #> (new java.io.ByteArrayOutputStream()) !) match {
+      case 0 =>
+        "git help -a".!! match {
+          case str if str.contains("flow") =>
+            ("git flow init -d"  #> (new java.io.ByteArrayOutputStream()) !) match {
+              case 0 => state
+              case _ => sys.error("git-flow init failed!")
+            }
+          case _ => sys.error("git-flow is required for release. See https://github.com/nvie/gitflow for installation instructions.")
       }
+      case _ => sys.error("git is required for release.")
     }
   }
 
   lazy val gitFlowReleaseStart = execStep {
-    "git flow release start " + releaseVersion(_)
+    "git flow release start v" + releaseVersion(_)
   }
 
   lazy val gitFlowReleaseFinish = execStep { state =>
     val rv = releaseVersion(state)
     val commands = List(
-      s"echo 'Releasing $rv.' > .git/MY_TAGMSG",
+      s"echo 'Releasing v$rv.' > .git/MY_TAGMSG",
       "git config core.editor \"mv .git/MY_TAGMSG\"",
-      s"git flow release finish $rv",
+      s"git flow release finish v$rv",
       "git config --unset core.editor"
     )
     commands mkString "; "
