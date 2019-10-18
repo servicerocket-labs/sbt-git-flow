@@ -9,8 +9,8 @@ description := "SBT plugin for git-flow integrated release"
 startYear := Option(2015)
 licenses +=("MIT", url("http://opensource.org/licenses/MIT"))
 
-scalaVersion := "2.10.5"
+scalaVersion := "2.10.7"
 
 sbtPlugin := true
 
-addSbtPlugin("com.github.gseitz" % "sbt-release" % "1.0.3")
+addSbtPlugin("com.github.gseitz" % "sbt-release" % "1.0.9")
